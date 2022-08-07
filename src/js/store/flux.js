@@ -36,9 +36,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			
 			},
-			fetchPlanetsData: () => {
-				// implement the planets data
-			  },
+			
 			  popUpAlert: () => {
 				alert("This is an alert");
 			  },

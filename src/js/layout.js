@@ -5,7 +5,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { Home } from "./views/home";
 import { DarthVader } from "./views/darthVader";
 
-import { PeopleDetail, StarWars, PlanetsDetails } from "./views/starWarsView";
+import { PeopleDetail, StarWars, PlanetsDetails, StarshipDetails } from "./views/starWarsView";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
@@ -46,13 +46,17 @@ const Layout = () => {
 			<Route exact path="/cardInfoPeople">
 				<CardInfoPeople/>
 			</Route>
+			<Route exact path="/starships/:id">
+				<StarshipDetails />
+			</Route>
             <Route exact path="/people/:id">
               <PeopleDetail />
             </Route>
             <Route exact path="/planets/:id">
                 <PlanetsDetails />
               </Route>
-
+			
+			  
             <Route>
               <h1>Not found!</h1>
             </Route>
