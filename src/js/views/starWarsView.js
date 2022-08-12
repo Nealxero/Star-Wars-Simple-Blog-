@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { CardInfoPeople } from "../component/cardInfoPeople";
+import "../../styles/home.css";
+import { FavContext } from "./favContent";
+import { useContext } from "react";
+
 
 function fetchDataCallback() {
   return fetch("https://www.swapi.tech/api/people")
     .then((response) => {
-      return response.json().then((response) => {
+      return response.json()
+      .then((response) => {
         return response;
       });
     })
@@ -41,47 +45,45 @@ function fetchStarships() {
       });
   }
 
-/* function fetchSpecificData(url) {
-  return fetch(url)
-    .then((response) => {
-      return response.json().then((response) => {
-        return response;
-      });
-    })
-    .catch((error) => {
-      //error handling
-      console.log(error);
-    });
-}*/
-
 const scrollStyle = {
     display: "flex",
     overflowX: "scroll",
+    padding: "5px",
     
 };
 const cardStyle = {
-  
-    marginLeft:"15px"
+  background: "#222",
+  border: "1px solid #dd2476",
+  color: "rgba(250, 250, 250, 0.8)",
+  marginLeft:"15px"
 }
-const headerStyle = {
+export const headerStyle = {
     textAlign: "center"
 }
+const buttonStyle = {
+    float: "right"
+}
 const StarWarsCard = ({ name, uid, openCharacterInfo, path }) => {
+  const { fav, setFav} = useContext(FavContext)
+  console.log(fav)
+
   return (
     <div className="card" style={cardStyle}>
       <img className="card-top-img"src="https://picsum.photos/200/300" width="300" />
       <h5 className="card-title">{name}</h5>
       
-      <button onClick={openCharacterInfo}>
-        <Link to={`/${path}/${uid}/`}>AAAAAAAA</Link>
+      <button onClick={openCharacterInfo} className="Button">
+        <Link to={`/${path}/${uid}/`}>More Info HERE!</Link>
       </button>
+
+      <button className="Button" style={buttonStyle} onClick={() => setFav([...fav, {path, uid}])}>⭐</button>
     </div>
   );
 };
 
 const CardRows = ({ title, data, path }) => {
   return (<>
-      <h1 style={headerStyle}>{title}</h1>;
+      <h1 style={headerStyle} href>{title}</h1>;
       <div style={scrollStyle}>
       {data.map((item) => (
         <div >
@@ -90,7 +92,6 @@ const CardRows = ({ title, data, path }) => {
           path={path}
           name={item.name}
           uid={item.uid}
-          openCharacterInfo={() => alert(item.name)}
         /></div>
       ))}
    </div>
@@ -153,12 +154,12 @@ export const PeopleDetail = () => {
 };
 
 export const PlanetsDetails = () => {
-  const { id } = useParams();
+  const { planet_id } = useParams();
   const [planetData, setPlanetData] = useState({});
 
   useEffect(() => {
     function fetchDataCallback() {
-      return fetch(`https://www.swapi.tech/api/planets/${id}`)
+      return fetch(`https://www.swapi.tech/api/planets/${uid}`)
         .then((response) => {
           return response.json().then((response) => {
             return setPlanetData(response.result);
@@ -171,7 +172,7 @@ export const PlanetsDetails = () => {
     }
 
     fetchDataCallback();
-  }, [id]);
+  }, [planet_id]);
 
   console.log(planetData);
   return null;

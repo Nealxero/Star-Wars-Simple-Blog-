@@ -4,16 +4,17 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
 import { DarthVader } from "./views/darthVader";
-
-import { PeopleDetail, StarWars, PlanetsDetails, StarshipDetails } from "./views/starWarsView";
+import { PlanetCards } from "./component/cardPlanets";
+import { PeopleCards } from "./component/cardPeople";
+import { ShipCards } from "./component/cardStarShips";
+import { StarWars } from "./views/starWarsView";
 import { Demo } from "./views/demo";
 import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { CardInfoPeople } from "./component/cardInfoPeople";
-
+import { FavProvider } from "./component/favContent";
 //create your first component
 
 const Layout = () => {
@@ -22,13 +23,14 @@ const Layout = () => {
   const basename = process.env.BASENAME || "";
 
   return (
-    <div>
+    <FavProvider>
+      <div>
       <BrowserRouter basename={basename}>
         <ScrollToTop>
           <Navbar />
           <Switch>
             <Route exact path="/">
-              <Home />
+              <StarWars />
             </Route>
             <Route exact path="/demo">
               <Demo />
@@ -36,27 +38,16 @@ const Layout = () => {
             <Route exact path="/single/:theid">
               <Single />
             </Route>
-
-            <Route exact path="/darthVader">
-              <DarthVader />
+            <Route exact path="/starships/:id">
+              <ShipCards />
             </Route>
-            <Route exact path="/starWarsView">
-              <StarWars />
-            </Route>
-			<Route exact path="/cardInfoPeople">
-				<CardInfoPeople/>
-			</Route>
-			<Route exact path="/starships/:id">
-				<StarshipDetails />
-			</Route>
             <Route exact path="/people/:id">
-              <PeopleDetail />
+              <PeopleCards />
             </Route>
             <Route exact path="/planets/:id">
-                <PlanetsDetails />
-              </Route>
-			
-			  
+              <PlanetCards />
+            </Route>
+
             <Route>
               <h1>Not found!</h1>
             </Route>
@@ -65,6 +56,7 @@ const Layout = () => {
         </ScrollToTop>
       </BrowserRouter>
     </div>
+    </FavProvider>
   );
 };
 
