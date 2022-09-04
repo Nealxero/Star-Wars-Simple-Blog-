@@ -1,9 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FavContext, FavProvider } from "./favContent";
+import { Context } from "../store/appContext";
+import { Navbar, Nav, Image, DropdownButton, Dropdown, NavDropdown, Button } from "react-bootstrap";
+import { headerStyle } from "../views/starWarsView";
 
-export const Navbar = () => {
+export const NavbarHead = () => {
+  const {fav, path} = useContext(FavContext)
+  const { store, actions } = useContext(Context);
+
   const imgStyle = {
     width: "150px",
     float: "left",
@@ -17,6 +23,8 @@ export const Navbar = () => {
   };
   return (
     <nav className="navbar navbar-dark  mb-3" style={navbarStyle}>
+
+      
       <Link to="/">
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Star_Wars_Logo.svg/694px-Star_Wars_Logo.svg.png"
@@ -25,20 +33,26 @@ export const Navbar = () => {
       </Link>
       <div className="ml-auto mx-5">
         
-        <div className="dropdown">
-          <button
-            className="btn btn-dark bg-dark dropdown-toggle"
-            type="button"
-            id="dropMenuButton"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            style={dropdownStyle}
-          >
-            Favorites
-            <span className="badge badge-dark m-2"></span>
-          </button>
-        </div>
+      <NavDropdown  title="Favorites"  variant="secondary" menuVariant="dark" className="bg-dark">
+        <h4 style={headerStyle}>Favorites List</h4>
+        <div className="dropdown-divider"></div>
+					{store.favorites.map((item, index, path, uid) => {
+
+
+						return (
+							<div key={index} className="d-flex justify-content-between">
+
+
+								<NavDropdown.Item as={Link} to={`/${path}`}>
+									{item.name}
+								</NavDropdown.Item>
+
+									<Button key={index}
+									onClick={() => actions.deleteFavorite(index)}className="btn">X</Button>
+							</div>
+						)
+					})}
+				</NavDropdown>
       </div>
     </nav>
   );
